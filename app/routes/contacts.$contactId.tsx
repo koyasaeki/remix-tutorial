@@ -2,7 +2,9 @@
 // 「$」は動的セグメントになる。
 // 今回の場合は、contacts/123 と contacts/abc のようになる。
 
+import type { LoaderFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
+import invariant from "tiny-invariant";
 import { Form, useLoaderData } from "@remix-run/react";
 import type { FunctionComponent } from "react";
 
@@ -10,8 +12,14 @@ import type { ContactRecord } from "../data";
 import { getContact } from "../data";
 
 // params には動的セグメントの値が入る。
-export const loader = async ({ params }) => {
+export const loader = async ({ params }: LoaderFunctionArgs) => {
+  invariant(params.contactId, "Missing contactId parameter");
   const contact = await getContact(params.contactId);
+
+  if (!contact) {
+    throw new Response("Not Found", { status: 404 });
+  }
+
   return json({ contact });
 };
 
