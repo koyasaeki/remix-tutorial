@@ -2,6 +2,7 @@
 // このコンポーネントは描画する UI の中で最初に呼び出される。
 // ゆえに、ページのグローバルなレイアウトを定義するのに適している。
 
+import type { LinksFunction } from "@remix-run/node";
 import {
   Form,
   Links,
@@ -9,6 +10,14 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
+// vite の機能。 ?url で URL としてインポートできる。
+import appStylesHref from "./app.css?url";
+
+// head タグ内に link を追加できる。
+// 今回はスタイルシートが追加される。
+export const links: LinksFunction = () => [
+  { rel: "stylesheet", href: appStylesHref },
+];
 
 export default function App() {
   return (
