@@ -7,6 +7,7 @@ import {
   Form,
   Links,
   Meta,
+  Outlet,
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
@@ -56,6 +57,15 @@ export default function App() {
               </li>
             </ul>
           </nav>
+        </div>
+
+        {/*
+          Remix は React Router の上に構築されている。
+          そのため、ネストルーティングをサポートしている。
+          親レイアウトの中で子ルートを描画するために、Outlet コンポーネントを使う。
+         */}
+        <div id="detail">
+          <Outlet />
         </div>
 
         <ScrollRestoration />
