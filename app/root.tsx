@@ -13,6 +13,8 @@ import {
   Scripts,
   ScrollRestoration,
   useLoaderData,
+  useNavigate,
+  useNavigation,
 } from "@remix-run/react";
 // vite の機能。 ?url で URL としてインポートできる。
 import appStylesHref from "./app.css?url";
@@ -38,6 +40,7 @@ export const action = async () => {
 
 export default function App() {
   const { contacts } = useLoaderData<typeof loader>();
+  const navigation = useNavigation();
 
   return (
     <html lang="en">
@@ -101,7 +104,10 @@ export default function App() {
           そのため、ネストルーティングをサポートしている。
           親レイアウトの中で子ルートを描画するために、Outlet コンポーネントを使う。
          */}
-        <div id="detail">
+        <div
+          id="detail"
+          className={navigation.state === "loading" ? "loading" : ""}
+        >
           <Outlet />
         </div>
 
