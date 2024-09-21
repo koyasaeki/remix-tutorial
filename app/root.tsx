@@ -12,11 +12,11 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  useLoaderData
+  useLoaderData,
 } from "@remix-run/react";
 // vite の機能。 ?url で URL としてインポートできる。
 import appStylesHref from "./app.css?url";
-import { getContacts } from "./data";
+import { createEmptyContact, getContacts } from "./data";
 
 // head タグ内に link を追加できる。
 // 今回はスタイルシートが追加される。
@@ -28,6 +28,12 @@ export const links: LinksFunction = () => [
 export const loader = async () => {
   const contacts = await getContacts();
   return json({ contacts });
+};
+
+// form の POST リクエストの処理を行う。
+export const action = async () => {
+  const contact = createEmptyContact();
+  return json({ contact });
 };
 
 export default function App() {
@@ -65,14 +71,23 @@ export default function App() {
                 {contacts.map((contact) => (
                   <li key={contact.id}>
                     <Link to={`/contacts/${contact.id}`}>
-                      {contact.first || contact.last ? (<>{contact.first} {contact.last}</>) : <i>No Name</i>}{" "}
+                      {contact.first || contact.last ? (
+                        <>
+                          {contact.first} {contact.last}
+                        </>
+                      ) : (
+                        <i>No Name</i>
+                      )}{" "}
                       {contact.favorite ? <span>*</span> : null}
                     </Link>
                   </li>
                 ))}
               </ul>
-            ) : (<p><i>No contacts</i></p>)
-            }
+            ) : (
+              <p>
+                <i>No contacts</i>
+              </p>
+            )}
           </nav>
         </div>
 
