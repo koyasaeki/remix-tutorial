@@ -3,7 +3,7 @@
 // ゆえに、ページのグローバルなレイアウトを定義するのに適している。
 
 import type { LinksFunction } from "@remix-run/node";
-import { json } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 import {
   Form,
   Link,
@@ -32,8 +32,8 @@ export const loader = async () => {
 
 // form の POST リクエストの処理を行う。
 export const action = async () => {
-  const contact = createEmptyContact();
-  return json({ contact });
+  const contact = await createEmptyContact();
+  return redirect(`/contacts/${contact.id}/edit`);
 };
 
 export default function App() {
